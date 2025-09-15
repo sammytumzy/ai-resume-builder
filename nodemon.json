@@ -1,0 +1,21 @@
+{
+  "watch": [
+    "server.js",
+    "routes/**/*.js",
+    "public/**/*.html",
+    "public/js/**/*.js",
+    "public/css/**/*.css"
+  ],
+  "ignore": [
+    "node_modules/**",
+    "uploads/**",
+    "public/css/*.min.css",
+    "package-lock.json"
+  ],
+  "ext": "js,json,html,css",
+  "exec": "node server.js",
+  "legacyWatch": true,
+  "delay": "300ms"
+}
+
+

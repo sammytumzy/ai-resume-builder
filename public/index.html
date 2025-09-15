@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume & Career Builder</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
+                <i class="fas fa-file-alt"></i>
+                <span>AI Resume Builder</span>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#resume" class="nav-link active">Resume</a>
+                <a href="#cover-letter" class="nav-link">Cover Letter</a>
+                <a href="#linkedin" class="nav-link">LinkedIn</a>
+                <a href="#interview" class="nav-link">Interview Prep</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Build Your Perfect Resume with AI</h1>
+                <p class="hero-subtitle">Create professional resumes, cover letters, and prepare for interviews with the power of artificial intelligence</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10K+</span>
+                        <span class="stat-label">Resumes Created</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Success Rate</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">AI Support</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Builder Section -->
+        <section id="resume" class="section">
+            <div class="container">
+                <h2 class="section-title">Resume Builder</h2>
+                <div class="resume-builder">
+                    <div class="input-panel">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="upload">Upload Resume</button>
+                            <button class="tab-btn" data-tab="manual">Manual Entry</button>
+                        </div>
+
+                        <!-- Upload Tab -->
+                        <div class="tab-content active" id="upload-tab">
+                            <div class="upload-area" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h3>Upload Your Resume</h3>
+                                <p>Support for PDF, DOCX, DOC, and TXT files</p>
+                                <input type="file" id="resumeFile" accept=".pdf,.docx,.doc,.txt" hidden>
+                                <button class="btn btn-primary" onclick="document.getElementById('resumeFile').click()">
+                                    Choose File
+                                </button>
+                            </div>
+                            <div class="file-info" id="fileInfo" style="display: none;">
+                                <div class="file-details">
+                                    <i class="fas fa-file"></i>
+                                    <span class="file-name"></span>
+                                    <span class="file-size"></span>
+                                </div>
+                                <button class="btn btn-secondary" id="processFile">Process File</button>
+                            </div>
+                        </div>
+
+                        <!-- Manual Entry Tab -->
+                        <div class="tab-content" id="manual-tab">
+                            <div class="form-group">
+                                <label for="resumeText">Paste your resume content here:</label>
+                                <textarea id="resumeText" placeholder="Paste your resume text or type your experience, skills, and education details..." rows="10"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="jobDescription">Target Job Description (Optional):</label>
+                                <textarea id="jobDescription" placeholder="Paste the job description you're applying for to optimize your resume..." rows="5"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn btn-primary btn-large" id="generateResume">
+                                <i class="fas fa-magic"></i>
+                                Generate Optimized Resume
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="output-panel">
+                        <div class="output-header">
+                            <h3>Your Optimized Resume</h3>
+                            <div class="output-actions">
+                                <button class="btn btn-secondary" id="copyResume">
+                                    <i class="fas fa-copy"></i>
+                                    Copy
+                                </button>
+                                <button class="btn btn-secondary" id="downloadResume">
+                                    <i class="fas fa-download"></i>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="output-content">
+                            <div id="resumeOutput" class="resume-preview">
+                                <p class="placeholder">Your optimized resume will appear here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cover Letter Section -->
+        <section id="cover-letter" class="section">
+            <div class="container">
+                <h2 class="section-title">Cover Letter Generator</h2>
+                <div class="cover-letter-builder">
+                    <div class="input-panel">
+                        <div class="form-group">
+                            <label for="clResumeText">Resume Content:</label>
+                            <textarea id="clResumeText" placeholder="Paste your resume content..." rows="8"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="clJobDescription">Job Description:</label>
+                            <textarea id="clJobDescription" placeholder="Paste the job description..." rows="6"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="companyName">Company Name:</label>
+                                <input type="text" id="companyName" placeholder="e.g., Google, Microsoft">
+                            </div>
+                            <div class="form-group">
+                                <label for="positionTitle">Position Title:</label>
+                                <input type="text" id="positionTitle" placeholder="e.g., Software Engineer">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="generateCoverLetter">
+                            <i class="fas fa-envelope"></i>
+                            Generate Cover Letter
+                        </button>
+                    </div>
+                    <div class="output-panel">
+                        <div class="output-header">
+                            <h3>Your Cover Letter</h3>
+                            <div class="output-actions">
+                                <button class="btn btn-secondary" id="copyCoverLetter">
+                                    <i class="fas fa-copy"></i>
+                                    Copy
+                                </button>
+                                <button class="btn btn-secondary" id="downloadCoverLetter">
+                                    <i class="fas fa-download"></i>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="output-content">
+                            <div id="coverLetterOutput" class="cover-letter-preview">
+                                <p class="placeholder">Your personalized cover letter will appear here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LinkedIn Section -->
+        <section id="linkedin" class="section">
+            <div class="container">
+                <h2 class="section-title">LinkedIn Summary Generator</h2>
+                <div class="linkedin-builder">
+                    <div class="input-panel">
+                        <div class="form-group">
+                            <label for="liResumeText">Resume Content:</label>
+                            <textarea id="liResumeText" placeholder="Paste your resume content..." rows="8"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="industry">Industry:</label>
+                                <input type="text" id="industry" placeholder="e.g., Technology, Healthcare">
+                            </div>
+                            <div class="form-group">
+                                <label for="experienceLevel">Experience Level:</label>
+                                <select id="experienceLevel">
+                                    <option value="">Select Level</option>
+                                    <option value="entry">Entry Level</option>
+                                    <option value="mid">Mid Level</option>
+                                    <option value="senior">Senior Level</option>
+                                    <option value="executive">Executive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="generateLinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                            Generate LinkedIn Summary
+                        </button>
+                    </div>
+                    <div class="output-panel">
+                        <div class="output-header">
+                            <h3>Your LinkedIn Summary</h3>
+                            <div class="output-actions">
+                                <button class="btn btn-secondary" id="copyLinkedIn">
+                                    <i class="fas fa-copy"></i>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="output-content">
+                            <div id="linkedinOutput" class="linkedin-preview">
+                                <p class="placeholder">Your LinkedIn summary will appear here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interview Prep Section -->
+        <section id="interview" class="section">
+            <div class="container">
+                <h2 class="section-title">Interview Preparation</h2>
+                <div class="interview-builder">
+                    <div class="input-panel">
+                        <div class="form-group">
+                            <label for="intResumeText">Resume Content:</label>
+                            <textarea id="intResumeText" placeholder="Paste your resume content..." rows="6"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="intJobDescription">Job Description:</label>
+                            <textarea id="intJobDescription" placeholder="Paste the job description..." rows="4"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="intPositionTitle">Position Title:</label>
+                                <input type="text" id="intPositionTitle" placeholder="e.g., Software Engineer">
+                            </div>
+                            <div class="form-group">
+                                <label for="intIndustry">Industry:</label>
+                                <input type="text" id="intIndustry" placeholder="e.g., Technology">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-large" id="generateInterviewPrep">
+                            <i class="fas fa-graduation-cap"></i>
+                            Generate Interview Prep
+                        </button>
+                    </div>
+                    <div class="output-panel">
+                        <div class="output-header">
+                            <h3>Interview Preparation Guide</h3>
+                            <div class="output-actions">
+                                <button class="btn btn-secondary" id="copyInterviewPrep">
+                                    <i class="fas fa-copy"></i>
+                                    Copy
+                                </button>
+                            </div>
+                        </div>
+                        <div class="output-content">
+                            <div id="interviewPrepOutput" class="interview-prep-preview">
+                                <p class="placeholder">Your interview preparation guide will appear here...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <div class="loading-spinner"></div>
+            <p>Generating your content...</p>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="toast success">
+        <i class="fas fa-check-circle"></i>
+        <span>Content generated successfully!</span>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="toast error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Something went wrong. Please try again.</span>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
