@@ -137,11 +137,33 @@ async function generateOptimizedResume(userInput, jobDescription = '') {
   }
 }
 
+// Simple server-side validation to prevent hallucinated/dummy resumes
+function isManualEntryInsufficient(resumeText) {
+  if (!resumeText) return true;
+  const text = String(resumeText).trim();
+  if (text.length < 300) return true; // ~short paragraph
+
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 60) return true; // too few words
+
+  // Require evidence of core sections
+  const hasExperience = /(experience|work|employment|roles?)\b/i.test(text);
+  const hasSkills = /(skills?|technolog(y|ies)|stack|tools?)\b/i.test(text);
+  const hasEducation = /(education|degree|bachelor|master|university|college)\b/i.test(text);
+
+  let presentSections = 0;
+  if (hasExperience) presentSections++;
+  if (hasSkills) presentSections++;
+  if (hasEducation) presentSections++;
+
+  return presentSections < 2; // must include at least two sections
+}
+
 // Upload and process resume file
 router.post('/upload', upload.single('resume'), async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
+      return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
 
     const filePath = req.file.path;
@@ -152,16 +174,13 @@ router.post('/upload', upload.single('resume'), async (req, res) => {
     // Clean up uploaded file
     fs.unlinkSync(filePath);
     
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       extractedText: extractedText,
       message: 'File processed successfully'
     });
   } catch (error) {
-    res.status(500).json({ 
-      error: 'File processing failed',
-      message: error.message 
-    });
+    res.status(500).json({ success: false, message: error.message || 'File processing failed' });
   }
 });
 
@@ -171,21 +190,26 @@ router.post('/generate', async (req, res) => {
     const { resumeText, jobDescription } = req.body;
     
     if (!resumeText || resumeText.trim().length === 0) {
-      return res.status(400).json({ error: 'Resume text is required' });
+      return res.status(400).json({ success: false, message: 'Please paste your resume content.' });
+    }
+
+    // If manual entry is too sparse, prompt user to add more info instead of fabricating
+    if (isManualEntryInsufficient(resumeText)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide more resume details before generating. Include at least two of: Work Experience (with bullets), Skills, and Education — roughly 60+ words total.'
+      });
     }
 
     const optimizedResume = await generateOptimizedResume(resumeText, jobDescription);
     
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       optimizedResume: optimizedResume,
       message: 'Resume generated successfully'
     });
   } catch (error) {
-    res.status(500).json({ 
-      error: 'Resume generation failed',
-      message: error.message 
-    });
+    res.status(500).json({ success: false, message: error.message || 'Resume generation failed' });
   }
 });
 
